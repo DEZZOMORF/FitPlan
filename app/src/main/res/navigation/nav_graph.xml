@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/planListFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.fitplan.ui.fragment.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/planListFragment"
+        android:name="com.example.fitplan.ui.fragment.PlanListFragment"
+        android:label="PlanListFragment">
+        <action
+            android:id="@+id/action_planListFragment_to_planDetailsFragment"
+            app:destination="@id/planDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/planDetailsFragment"
+        android:name="com.example.fitplan.ui.fragment.PlanDetailsFragment"
+        android:label="PlanDetailsFragment" />
+</navigation>

@@ -1,0 +1,24 @@
+package com.example.fitplan.manager
+
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
+
+class SharedPreferencesManager (context: Context?) {
+
+    private val SHARED_PREFERENCES_FILE_NAME = "fit_pref"
+    private val ACCESS_TOKEN = "access_token"
+
+
+    private val sharedPreferences: SharedPreferences? =
+        context?.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
+
+    var userAccessToken: String?
+        get() = sharedPreferences?.getString(ACCESS_TOKEN, null)
+        set(token) {
+            sharedPreferences?.edit {
+                putString(ACCESS_TOKEN, token)
+            }
+        }
+
+}

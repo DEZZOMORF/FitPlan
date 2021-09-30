@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">fitplan</string>
+    <string name="login">LOGIN</string>
+    <string name="password">Password</string>
+    <string name="username">Email</string>
+    <string name="userEmail">test@fitplanapp.com</string>
+    <string name="userPassword">fitplan123</string>
+    <string name="plan_list">Plan list</string>
+</resources>
