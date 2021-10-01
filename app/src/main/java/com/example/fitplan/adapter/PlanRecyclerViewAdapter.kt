@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fitplan.R
+import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.Plan
 
 class PlanRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -36,7 +37,10 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         private val itemCard: CardView = view.findViewById(R.id.itemCard)
         override fun bindView() {
             val item = list[adapterPosition]
-            Glide.with(itemView.context).load(item.imageUrl).into(cardBackground)
+            if (SharedPreferencesManager(itemView.context).showingImageState) {
+                Glide.with(itemView.context).load(item.imageUrl).into(cardBackground)
+                cardBackground.visibility = View.VISIBLE
+            }
             title.text = "${item.name}\n${item.athleteFirstName} ${item.athleteLastName}"
             itemCard.setOnClickListener {
                 val bundle = Bundle()
