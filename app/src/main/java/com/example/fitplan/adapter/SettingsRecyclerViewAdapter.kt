@@ -1,22 +1,27 @@
 package com.example.fitplan.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitplan.R
-import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.SettingsItem
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.example.fitplan.model.SettingsType
 
-class SettingsRecyclerViewAdapter(private val settingsList: Set<SettingsItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SettingsRecyclerViewAdapter(
+    private val clickBlock: (SettingsItem, Int) -> Unit
+) : RecyclerView.Adapter<SettingsRecyclerViewAdapter.BaseSettingViewHolder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    private var settingsList: List<SettingsItem>? = null
+
+    fun update(list: List<SettingsItem>) {
+        settingsList = list
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseSettingViewHolder {
         val defaultItemView = LayoutInflater.from(viewGroup.context).inflate(R.layout.settings_item_default, viewGroup, false)
         val switchItemView = LayoutInflater.from(viewGroup.context).inflate(R.layout.settings_item_switch, viewGroup, false)
         return when (viewType) {
@@ -25,53 +30,43 @@ class SettingsRecyclerViewAdapter(private val settingsList: Set<SettingsItem>) :
         }
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if (viewHolder is BaseViewHolder) {
-            viewHolder.bindView()
+    override fun onBindViewHolder(viewHolder: BaseSettingViewHolder, position: Int) {
+        settingsList?.elementAt(position)?.let {
+            viewHolder.bindView(it)
         }
     }
 
-    override fun getItemCount() = settingsList.size
+    override fun getItemCount() = settingsList?.size?: 0
 
     override fun getItemViewType(position: Int): Int {
-        return when (settingsList.elementAt(position).switch) {
-            true -> 1
-            false -> 0
+        return when (settingsList?.elementAt(position)?.type) {
+            SettingsType.SWITCH -> 1
+            else -> 0
         }
     }
 
-    inner class DefaultViewHolder(view: View) : BaseViewHolder(view) {
-        private val item: TextView = view.findViewById(R.id.defaultSetting)
-        override fun bindView() {
-            val name = settingsList.elementAt(adapterPosition).name
-            item.text = name
-            item.setOnClickListener { setFun(name, itemView, null) }
-        }
-    }
+    inner class DefaultViewHolder(view: View) : BaseSettingViewHolder(view)
 
-    inner class SwitchViewHolder(view: View) : BaseViewHolder(view) {
-        private val item: SwitchMaterial = view.findViewById(R.id.switchSetting)
-        override fun bindView() {
-            val name = settingsList.elementAt(adapterPosition).name
-            item.text = name
-            item.isChecked = SharedPreferencesManager(itemView.context).showingImageState!!
-            item.setOnClickListener { setFun(name, itemView, item.isChecked) }
-        }
-    }
+    inner class SwitchViewHolder(view: View) : BaseSettingViewHolder(view) {
+        override val settingView: SwitchCompat = view.findViewById(R.id.setting)
 
-    abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun bindView()
-    }
-
-    private fun setFun(name: String, view: View, switchState: Boolean?) {
-        when (name) {
-            "Logout" -> {
-                SharedPreferencesManager(view.context).userAccessToken = null
-                Navigation.findNavController(view).navigate(R.id.planListFragment)
-                Toast.makeText(view.context, "logout", Toast.LENGTH_LONG).show()
+        override fun bindView(item: SettingsItem) {
+            settingView.text = item.name
+            settingView.isChecked = item.switched?: false
+            settingView.setOnCheckedChangeListener { _, _ ->
+                clickBlock.invoke(item, adapterPosition)
             }
-            "Enable showing image" -> {
-                if (switchState != null) SharedPreferencesManager(view.context).showingImageState = switchState
+        }
+    }
+
+    abstract inner class BaseSettingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        protected open val settingView: TextView = view.findViewById(R.id.setting)
+
+        open fun bindView(item: SettingsItem) {
+            settingView.text = item.name
+
+            settingView.setOnClickListener {
+                clickBlock.invoke(item, adapterPosition)
             }
         }
     }
