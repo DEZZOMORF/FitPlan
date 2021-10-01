@@ -8,6 +8,7 @@ class SharedPreferencesManager (context: Context?) {
 
     private val SHARED_PREFERENCES_FILE_NAME = "fit_pref"
     private val ACCESS_TOKEN = "access_token"
+    private val SHOWING_IMAGE_STATE = "showing image state"
 
 
     private val sharedPreferences: SharedPreferences? =
@@ -18,6 +19,14 @@ class SharedPreferencesManager (context: Context?) {
         set(token) {
             sharedPreferences?.edit {
                 putString(ACCESS_TOKEN, token)
+            }
+        }
+
+    var showingImageState: Boolean
+        get() = sharedPreferences?.getBoolean(SHOWING_IMAGE_STATE, true) == true
+        set(state) {
+            sharedPreferences?.edit {
+                putBoolean(SHOWING_IMAGE_STATE, state!!)
             }
         }
 

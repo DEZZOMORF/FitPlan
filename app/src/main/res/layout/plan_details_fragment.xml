@@ -5,6 +5,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="plan"
             type="com.example.fitplan.model.Plan" />
@@ -12,8 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="4dp">
+        android:layout_height="match_parent">
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -28,14 +28,15 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/plan_toolbar"
-            app:title="@{plan.name}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:title="@{plan.name}" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/itemCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             app:cardCornerRadius="12sp"
             app:cardElevation="@dimen/cardview_default_elevation"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,9 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:text='@{plan.name}'
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text='@{plan.name}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemCard" />
@@ -74,8 +75,9 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:padding="16dp"
             android:text="@{plan.athleteFirstName + ' ' + plan.athleteLastName + System.lineSeparator() + System.lineSeparator() + plan.description}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 

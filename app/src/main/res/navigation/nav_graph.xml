@@ -15,9 +15,20 @@
         <action
             android:id="@+id/action_planListFragment_to_planDetailsFragment"
             app:destination="@id/planDetailsFragment" />
+        <action
+            android:id="@+id/action_planListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/planDetailsFragment"
         android:name="com.example.fitplan.ui.fragment.PlanDetailsFragment"
-        android:label="PlanDetailsFragment" />
+        android:label="PlanDetailsFragment" >
+        <action
+            android:id="@+id/action_planDetailsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.fitplan.ui.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

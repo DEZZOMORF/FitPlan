@@ -44,8 +44,7 @@ class PlanListFragment: Fragment() {
             when (dataState) {
                 is DataState.Success<List<Plan>> -> {
                     displayProgressBar(false)
-                    setView()
-                    initRecyclerView(dataState.data)
+                    setView(dataState.data)
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
@@ -59,10 +58,12 @@ class PlanListFragment: Fragment() {
         })
     }
 
-    private fun setView() {
+    private fun setView(list: List<Plan>) {
         binding.title = "Plan list"
         btnSetting.visibility = View.VISIBLE
         btnBack.visibility = View.GONE
+        btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
+        initRecyclerView(list)
     }
 
     private fun initRecyclerView(response: List<Plan>) {

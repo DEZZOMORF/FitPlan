@@ -56,10 +56,11 @@ class PlanDetailsFragment: Fragment(){
     }
 
     private fun setView(plan: Plan) {
-        binding.plan = plan
         btnSetting.visibility = View.VISIBLE
         btnBack.visibility = View.VISIBLE
         btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planDetailsFragment_to_settingsFragment) }
+        binding.plan = plan
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {
