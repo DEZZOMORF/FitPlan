@@ -23,6 +23,10 @@ class PlanListViewModel @Inject constructor(
     val dataState: LiveData<DataState<List<Plan>>>
         get() = _dataState
 
+    init{
+        getList()
+    }
+
     fun getList() {
         viewModelScope.launch {
             planRepository.getList()

@@ -1,31 +1,31 @@
 package com.example.fitplan.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitplan.R
 import com.example.fitplan.adapter.PlanRecyclerViewAdapter
 import com.example.fitplan.databinding.PlanListFragmentBinding
 import com.example.fitplan.model.Plan
-import com.example.fitplan.viewmodel.PlanListViewModel
 import com.example.fitplan.util.DataState
+import com.example.fitplan.viewmodel.PlanListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.login_fragment.progressBar
-import kotlinx.android.synthetic.main.plan_list_fragment.*
-import kotlinx.android.synthetic.main.plan_toolbar.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class PlanListFragment: Fragment() {
+class PlanListFragment : Fragment() {
 
     private val viewModel: PlanListViewModel by viewModels()
-    private val planRecyclerViewAdapter: PlanRecyclerViewAdapter = PlanRecyclerViewAdapter()
+
+    @Inject
+    lateinit var planRecyclerViewAdapter: PlanRecyclerViewAdapter
     private lateinit var binding: PlanListFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,15 +36,17 @@ class PlanListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObserver()
-        viewModel.getList()
+        initRecyclerView()
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+        viewModel.dataState.observe(viewLifecycleOwner) { dataState ->
             when (dataState) {
                 is DataState.Success<List<Plan>> -> {
                     displayProgressBar(false)
-                    setView(dataState.data)
+                    setView()
+                    planRecyclerViewAdapter.list = ArrayList(dataState.data)
+                    planRecyclerViewAdapter.notifyItemRangeInserted(0, dataState.data.size)
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
@@ -59,25 +61,29 @@ class PlanListFragment: Fragment() {
                     displayProgressBar(true)
                 }
             }
-        })
+        }
     }
 
-    private fun setView(list: List<Plan>) {
+    private fun setView() {
         binding.title = "Plan list"
-        btnSetting.visibility = View.VISIBLE
-        btnBack.visibility = View.GONE
-        btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
-        initRecyclerView(list)
+        binding.toolbar.btnSetting.visibility = View.VISIBLE
+        binding.toolbar.btnBack.visibility = View.GONE
+        binding.toolbar.btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
     }
 
-    private fun initRecyclerView(response: List<Plan>) {
-        planRecyclerViewAdapter.list = ArrayList(response)
-        planRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        planRecyclerView.adapter = planRecyclerViewAdapter
+    private fun initRecyclerView() {
+        binding.planRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.planRecyclerView.adapter = planRecyclerViewAdapter
+        planRecyclerViewAdapter.onItemClickListener = {
+            val bundle = Bundle()
+            bundle.putInt("id", it)
+            Log.e("ID", it.toString())
+            findNavController().navigate(R.id.action_planListFragment_to_planDetailsFragment, bundle)
+        }
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {
-        progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
     }
 
     private fun displayError(message: String?) {

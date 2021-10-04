@@ -46,17 +46,17 @@ class SettingsFragment : Fragment() {
 
     private fun setView() {
         binding.title = "Settings"
-        btnSetting.visibility = View.GONE
-        btnBack.visibility = View.VISIBLE
-        btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.toolbar.btnSetting.visibility = View.GONE
+        binding.toolbar.btnBack.visibility = View.VISIBLE
+        binding.toolbar.btnBack.setOnClickListener { requireActivity().onBackPressed() }
         initRecyclerView()
         viewModel.logout = { findNavController().navigate(R.id.loginFragment) }
     }
 
     private fun initRecyclerView() {
         settingsRecyclerViewAdapter = SettingsRecyclerViewAdapter(viewModel::onSettingClicked)
-        settingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        settingsRecyclerView.adapter = settingsRecyclerViewAdapter
+        binding.settingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.settingsRecyclerView.adapter = settingsRecyclerViewAdapter
     }
 
 }
