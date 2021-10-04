@@ -5,6 +5,7 @@ import com.example.fitplan.model.Plan
 import com.example.fitplan.model.PlanListResponse
 import com.example.fitplan.model.PlanResponse
 import com.example.fitplan.util.NetworkUrls
+import retrofit2.Response
 import retrofit2.http.*
 
 interface RetrofitService {
@@ -17,12 +18,12 @@ interface RetrofitService {
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("grant_type") grantType: String,
-    ): LoginResponse
+    ): Response<LoginResponse>
 
     @GET(NetworkUrls.PLANS_LIST)
-    suspend fun getList(): PlanListResponse
+    suspend fun getList(): Response<PlanListResponse>
 
     @GET(NetworkUrls.PLAN_DETAILS)
-    suspend fun getPlan(@Query("planId") id: Int): PlanResponse
+    suspend fun getPlan(@Query("planId") id: Int): Response<PlanResponse>
 
 }

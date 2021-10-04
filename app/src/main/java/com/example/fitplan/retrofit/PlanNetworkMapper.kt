@@ -64,8 +64,8 @@ class PlanNetworkMapper @Inject constructor() : EntityMapper<PlanNetworkEntity, 
         )
     }
 
-    fun mapFromEntityList(entities: List<PlanNetworkEntity>): List<Plan> {
-        return entities.map { mapFromEntity(it) }
+    fun mapFromEntityList(entities: List<PlanNetworkEntity>?): List<Plan>? {
+        return entities?.map { mapFromEntity(it) }
     }
 
 }

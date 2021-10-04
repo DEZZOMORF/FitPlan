@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitplan.model.LoginResponse
-import com.example.fitplan.repository.FitPlanRepository
-import com.example.test.util.DataState
+import com.example.fitplan.repository.UserRepository
+import com.example.fitplan.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val fitPlanRepository: FitPlanRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val clientId = "XW9LtUlJfcCHMJbLyLen3lglY4COUgmCQErwjze7"
@@ -28,9 +28,9 @@ class LoginViewModel @Inject constructor(
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            fitPlanRepository.login(username, password, clientId, clientSecret, grantType)
+            userRepository.login(username, password, clientId, clientSecret, grantType)
                 .onEach { dataState ->
-                    _dataState.postValue(dataState)
+                    _dataState.postValue(dataState as DataState<LoginResponse>?)
                 }
                 .launchIn(viewModelScope)
         }

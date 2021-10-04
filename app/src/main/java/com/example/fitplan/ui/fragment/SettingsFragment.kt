@@ -22,13 +22,17 @@ import kotlinx.android.synthetic.main.plan_toolbar.*
 import kotlinx.android.synthetic.main.settings_fragment.*
 
 @AndroidEntryPoint
-class SettingsFragment: Fragment() {
+class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
     private lateinit var binding: SettingsFragmentBinding
     private lateinit var settingsRecyclerViewAdapter: SettingsRecyclerViewAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = SettingsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +50,7 @@ class SettingsFragment: Fragment() {
         btnBack.visibility = View.VISIBLE
         btnBack.setOnClickListener { requireActivity().onBackPressed() }
         initRecyclerView()
-        viewModel.logout = {findNavController().navigate(R.id.loginFragment)}
+        viewModel.logout = { findNavController().navigate(R.id.loginFragment) }
     }
 
     private fun initRecyclerView() {

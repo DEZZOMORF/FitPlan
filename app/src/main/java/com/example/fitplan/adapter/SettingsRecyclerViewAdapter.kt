@@ -5,14 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitplan.R
+import com.example.fitplan.databinding.ItemPlanBinding
+import com.example.fitplan.databinding.SettingsItemDefaultBinding
+import com.example.fitplan.databinding.SettingsItemSwitchBinding
 import com.example.fitplan.model.SettingsItem
 import com.example.fitplan.model.SettingsType
 
 class SettingsRecyclerViewAdapter(
     private val clickBlock: (SettingsItem, Int) -> Unit
-) : RecyclerView.Adapter<SettingsRecyclerViewAdapter.BaseSettingViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var settingsList: List<SettingsItem>? = null
 
@@ -21,22 +25,22 @@ class SettingsRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseSettingViewHolder {
-        val defaultItemView = LayoutInflater.from(viewGroup.context).inflate(R.layout.settings_item_default, viewGroup, false)
-        val switchItemView = LayoutInflater.from(viewGroup.context).inflate(R.layout.settings_item_switch, viewGroup, false)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(viewGroup.context)
         return when (viewType) {
-            0 ->  DefaultViewHolder(defaultItemView)
-            else ->  SwitchViewHolder(switchItemView)
+            0 -> DefaultViewHolder(SettingsItemDefaultBinding.inflate(inflater, viewGroup, false))
+            else -> SwitchViewHolder(SettingsItemSwitchBinding.inflate(inflater, viewGroup, false))
         }
     }
 
-    override fun onBindViewHolder(viewHolder: BaseSettingViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         settingsList?.elementAt(position)?.let {
-            viewHolder.bindView(it)
+            if (viewHolder is BaseSettingViewHolder)
+                viewHolder.bindView(it)
         }
     }
 
-    override fun getItemCount() = settingsList?.size?: 0
+    override fun getItemCount() = settingsList?.size ?: 0
 
     override fun getItemViewType(position: Int): Int {
         return when (settingsList?.elementAt(position)?.type) {
@@ -45,30 +49,30 @@ class SettingsRecyclerViewAdapter(
         }
     }
 
-    inner class DefaultViewHolder(view: View) : BaseSettingViewHolder(view)
-
-    inner class SwitchViewHolder(view: View) : BaseSettingViewHolder(view) {
-        override val settingView: SwitchCompat = view.findViewById(R.id.setting)
+    inner class DefaultViewHolder(val binding: SettingsItemDefaultBinding) :
+        BaseSettingViewHolder(binding.root) {
 
         override fun bindView(item: SettingsItem) {
-            settingView.text = item.name
-            settingView.isChecked = item.switched?: false
-            settingView.setOnCheckedChangeListener { _, _ ->
+            binding.item = item
+            binding.setting.setOnClickListener {
                 clickBlock.invoke(item, adapterPosition)
             }
         }
     }
 
-    abstract inner class BaseSettingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        protected open val settingView: TextView = view.findViewById(R.id.setting)
+    inner class SwitchViewHolder(val binding: SettingsItemSwitchBinding) :
+        BaseSettingViewHolder(binding.root) {
 
-        open fun bindView(item: SettingsItem) {
-            settingView.text = item.name
-
-            settingView.setOnClickListener {
+        override fun bindView(item: SettingsItem) {
+            binding.item = item
+            binding.setting.isChecked = item.switched ?: false
+            binding.setting.setOnCheckedChangeListener { _, _ ->
                 clickBlock.invoke(item, adapterPosition)
             }
         }
     }
 
+    abstract class BaseSettingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        abstract fun bindView(item: SettingsItem)
+    }
 }

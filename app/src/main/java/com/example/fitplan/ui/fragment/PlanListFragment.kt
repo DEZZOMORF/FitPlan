@@ -15,7 +15,7 @@ import com.example.fitplan.adapter.PlanRecyclerViewAdapter
 import com.example.fitplan.databinding.PlanListFragmentBinding
 import com.example.fitplan.model.Plan
 import com.example.fitplan.viewmodel.PlanListViewModel
-import com.example.test.util.DataState
+import com.example.fitplan.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_fragment.progressBar
 import kotlinx.android.synthetic.main.plan_list_fragment.*
@@ -47,6 +47,10 @@ class PlanListFragment: Fragment() {
                     setView(dataState.data)
                 }
                 is DataState.Error -> {
+                    displayProgressBar(false)
+                    displayError(dataState.exception.message)
+                }
+                is DataState.UserExceptionState -> {
                     displayProgressBar(false)
                     displayError(dataState.exception.message)
                     findNavController().navigate(R.id.loginFragment)

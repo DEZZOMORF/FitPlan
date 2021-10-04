@@ -12,14 +12,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.fitplan.R
 import com.example.fitplan.databinding.PlanDetailsFragmentBinding
 import com.example.fitplan.model.Plan
+import com.example.fitplan.util.DataState
 import com.example.fitplan.viewmodel.PlanDetailsViewModel
-import com.example.test.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.plan_list_fragment.*
 import kotlinx.android.synthetic.main.plan_toolbar.*
 
 @AndroidEntryPoint
-class PlanDetailsFragment: Fragment(){
+class PlanDetailsFragment : Fragment() {
 
     private val viewModel: PlanDetailsViewModel by viewModels()
     private lateinit var binding: PlanDetailsFragmentBinding
@@ -46,6 +46,10 @@ class PlanDetailsFragment: Fragment(){
                 is DataState.Error -> {
                     displayProgressBar(false)
                     displayError(dataState.exception.message)
+                }
+                is DataState.UserExceptionState -> {
+                    displayProgressBar(false)
+                    displayError(dataState.exception.toString())
                     findNavController().navigate(R.id.loginFragment)
                 }
                 is DataState.Loading -> {

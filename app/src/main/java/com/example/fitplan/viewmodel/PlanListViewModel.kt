@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitplan.model.Plan
-import com.example.fitplan.repository.FitPlanRepository
-import com.example.test.util.DataState
+import com.example.fitplan.repository.PlanRepository
+import com.example.fitplan.repository.UserRepository
+import com.example.fitplan.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlanListViewModel @Inject constructor(
-    private val fitPlanRepository: FitPlanRepository,
+    private val planRepository: PlanRepository,
 ) : ViewModel() {
 
     private val _dataState: MutableLiveData<DataState<List<Plan>>> = MutableLiveData()
@@ -24,7 +25,7 @@ class PlanListViewModel @Inject constructor(
 
     fun getList() {
         viewModelScope.launch {
-            fitPlanRepository.getList()
+            planRepository.getList()
                 .onEach { dataState ->
                     _dataState.postValue(dataState)
                 }

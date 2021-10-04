@@ -15,22 +15,27 @@ class SettingsViewModel @Inject constructor(
     private val sharedPreferencesManager: SharedPreferencesManager
 ) : ViewModel() {
 
-    private val _settings =  MutableLiveData(generateSettingsList())
+    private val _settings = MutableLiveData(generateSettingsList())
     val settings: LiveData<MutableList<SettingsItem>> get() = _settings
     lateinit var logout: () -> Unit
 
     private fun generateSettingsList(): MutableList<SettingsItem> {
         return mutableListOf(
-            SettingsItem("Enable showing image",
+            SettingsItem(
+                "Enable showing image",
                 SettingsType.SWITCH,
                 ActionType.IMAGE_SHOWING,
                 sharedPreferencesManager.showingImageState
             ),
-            SettingsItem("Logout", SettingsType.DEFAULT, ActionType.LOGOUT))
+            SettingsItem(
+                "Logout",
+                SettingsType.DEFAULT,
+                ActionType.LOGOUT)
+        )
     }
 
     fun onSettingClicked(item: SettingsItem, index: Int) {
-        when(item.action) {
+        when (item.action) {
             ActionType.IMAGE_SHOWING -> {
                 val imageSwitched = !sharedPreferencesManager.showingImageState
                 sharedPreferencesManager.showingImageState = imageSwitched
