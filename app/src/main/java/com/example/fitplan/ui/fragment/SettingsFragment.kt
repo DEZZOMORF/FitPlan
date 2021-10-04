@@ -50,7 +50,7 @@ class SettingsFragment : Fragment() {
         binding.toolbar.btnBack.visibility = View.VISIBLE
         binding.toolbar.btnBack.setOnClickListener { requireActivity().onBackPressed() }
         initRecyclerView()
-        viewModel.logout = { findNavController().navigate(R.id.loginFragment) }
+        viewModel.logout = { findNavController().navigate(R.id.action_settingsFragment_to_loginFragment) }
     }
 
     private fun initRecyclerView() {

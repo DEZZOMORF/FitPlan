@@ -40,22 +40,24 @@ class PlanListFragment : Fragment() {
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner) { dataState ->
-            when (dataState) {
+        viewModel.dataState.observe(viewLifecycleOwner) {
+            when (it) {
                 is DataState.Success<List<Plan>> -> {
                     displayProgressBar(false)
                     setView()
-                    planRecyclerViewAdapter.list = ArrayList(dataState.data)
-                    planRecyclerViewAdapter.notifyItemRangeInserted(0, dataState.data.size)
+                    planRecyclerViewAdapter.list = ArrayList(it.data)
+                    planRecyclerViewAdapter.notifyItemRangeInserted(0, it.data.size)
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
-                    displayError(dataState.exception.message)
+                    displayError(it.exception.message)
                 }
                 is DataState.UserExceptionState -> {
                     displayProgressBar(false)
-                    displayError(dataState.exception.message)
-                    findNavController().navigate(R.id.loginFragment)
+                    displayError(it.exception.message)
+                    if(it.exception.code == 401) {
+                        findNavController().navigate(R.id.loginFragment)
+                    }
                 }
                 is DataState.Loading -> {
                     displayProgressBar(true)
