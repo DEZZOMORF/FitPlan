@@ -18,7 +18,7 @@ class PlanListViewModel @Inject constructor(
     private val planRepository: PlanRepository,
 ) : ViewModel() {
 
-    private val _dataState: MutableLiveData<DataState<List<Plan>>> = MutableLiveData()
+    private val _dataState = MutableLiveData<DataState<List<Plan>>>()
     val dataState: LiveData<DataState<List<Plan>>>
         get() = _dataState
 
@@ -26,7 +26,7 @@ class PlanListViewModel @Inject constructor(
         getList()
     }
 
-    fun getList() {
+    private fun getList() {
         viewModelScope.launch {
             planRepository.getList()
                 .onEach { dataState ->
@@ -35,5 +35,4 @@ class PlanListViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
     }
-
 }

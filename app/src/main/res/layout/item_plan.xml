@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="plan"
             type="com.example.fitplan.model.Plan" />
@@ -32,7 +31,7 @@
                     android:layout_height="200dp"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
-                    android:foreground="@drawable/gradient_shape"
+                    android:background="@drawable/gradient_shape"
                     android:scaleType="centerCrop"
                     android:visibility="gone" />
 

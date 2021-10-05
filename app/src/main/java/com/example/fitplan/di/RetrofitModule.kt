@@ -2,7 +2,7 @@ package com.example.fitplan.di
 
 import android.content.Context
 import com.example.fitplan.manager.SharedPreferencesManager
-import com.example.fitplan.retrofit.RetrofitService
+import com.example.fitplan.retrofit.ApiService
 import com.example.fitplan.util.NetworkUrls
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -56,10 +56,9 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitService(retrofit: Retrofit.Builder): RetrofitService {
+    fun provideRetrofitService(retrofit: Retrofit.Builder): ApiService {
         return retrofit
             .build()
-            .create(RetrofitService::class.java)
+            .create(ApiService::class.java)
     }
-
 }

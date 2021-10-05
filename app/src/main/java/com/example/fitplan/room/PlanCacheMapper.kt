@@ -67,5 +67,4 @@ class PlanCacheMapper @Inject constructor() : EntityMapper<PlanCacheEntity, Plan
     fun mapFromEntityList(entities: List<PlanCacheEntity>): List<Plan> {
         return entities.map { mapFromEntity(it) }
     }
-
 }

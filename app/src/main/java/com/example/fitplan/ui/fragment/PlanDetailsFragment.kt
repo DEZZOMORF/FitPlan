@@ -23,6 +23,10 @@ class PlanDetailsFragment : Fragment() {
     private val viewModel: PlanDetailsViewModel by viewModels()
     private lateinit var binding: PlanDetailsFragmentBinding
 
+    companion object {
+        private val ID: String = "id"
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = PlanDetailsFragmentBinding.inflate(inflater, container, false)
         return binding.root
@@ -31,11 +35,12 @@ class PlanDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObserver()
+        setView()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getPlan(requireArguments().getInt("id"))
+        viewModel.getPlan(requireArguments().getInt(ID))
     }
 
     private fun subscribeObserver() {
@@ -43,7 +48,7 @@ class PlanDetailsFragment : Fragment() {
             when (it) {
                 is DataState.Success<Plan> -> {
                     displayProgressBar(false)
-                    setView(it.data)
+                    binding.plan = it.data
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
@@ -52,7 +57,7 @@ class PlanDetailsFragment : Fragment() {
                 is DataState.UserExceptionState -> {
                     displayProgressBar(false)
                     displayError(it.exception.message)
-                    if(it.exception.code == 401) {
+                    if (it.exception.code == 401) {
                         findNavController().navigate(R.id.loginFragment)
                     }
                 }
@@ -63,16 +68,17 @@ class PlanDetailsFragment : Fragment() {
         }
     }
 
-    private fun setView(plan: Plan) {
-        btnSetting.visibility = View.VISIBLE
-        btnBack.visibility = View.VISIBLE
-        btnBack.setOnClickListener { requireActivity().onBackPressed() }
-        btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planDetailsFragment_to_settingsFragment) }
-        binding.plan = plan
+    private fun setView() {
+        with(binding.toolbar) {
+            btnSetting.visibility = View.VISIBLE
+            btnBack.visibility = View.VISIBLE
+            btnBack.setOnClickListener { requireActivity().onBackPressed() }
+            btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planDetailsFragment_to_settingsFragment) }
+        }
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {
-        progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
     }
 
     private fun displayError(message: String?) {
@@ -82,5 +88,4 @@ class PlanDetailsFragment : Fragment() {
             Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

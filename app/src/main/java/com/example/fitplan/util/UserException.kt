@@ -6,5 +6,4 @@ class UserException(val code: Int) : Exception(
         401 -> "$code Unauthorized Error"
         else -> "Unknown error"
     }
-
 )

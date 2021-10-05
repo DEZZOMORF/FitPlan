@@ -78,6 +78,5 @@ data class PlanCacheEntity(
     val imageTvUrl: String?,
 
     @ColumnInfo(name = "description")
-    val description: String?,
-
-    )
+    val description: String?
+)

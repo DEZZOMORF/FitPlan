@@ -21,6 +21,10 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: SettingsFragmentBinding
     private lateinit var settingsRecyclerViewAdapter: SettingsRecyclerViewAdapter
 
+    companion object {
+        private val TITLE = "Settings"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,10 +42,12 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setView() {
-        binding.title = "Settings"
-        binding.toolbar.btnSetting.visibility = View.GONE
-        binding.toolbar.btnBack.visibility = View.VISIBLE
-        binding.toolbar.btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        binding.title = TITLE
+        with(binding.toolbar) {
+            btnSetting.visibility = View.GONE
+            btnBack.visibility = View.VISIBLE
+            btnBack.setOnClickListener { requireActivity().onBackPressed() }
+        }
         initRecyclerView()
         viewModel.logout = { findNavController().navigate(R.id.action_settingsFragment_to_loginFragment) }
     }
@@ -51,5 +57,4 @@ class SettingsFragment : Fragment() {
         binding.settingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.settingsRecyclerView.adapter = settingsRecyclerViewAdapter
     }
-
 }

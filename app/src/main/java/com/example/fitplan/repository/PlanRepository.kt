@@ -2,7 +2,7 @@ package com.example.fitplan.repository
 
 import com.example.fitplan.model.Plan
 import com.example.fitplan.retrofit.PlanNetworkMapper
-import com.example.fitplan.retrofit.RetrofitService
+import com.example.fitplan.retrofit.ApiService
 import com.example.fitplan.room.PlanCacheMapper
 import com.example.fitplan.room.PlanDao
 import com.example.fitplan.util.DataState
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class PlanRepository @Inject constructor(
     private val planDao: PlanDao,
-    private val retrofitService: RetrofitService,
+    private val apiService: ApiService,
     private val planNetworkMapper: PlanNetworkMapper,
     private val planCacheMapper: PlanCacheMapper
 ) {
@@ -21,7 +21,7 @@ class PlanRepository @Inject constructor(
     suspend fun getList(): Flow<DataState<List<Plan>>> = flow {
         emit(DataState.Loading)
         try {
-            val response = retrofitService.getList()
+            val response = apiService.getList()
             if (response.isSuccessful) {
                 response.body()?.let {
                     val plans = planNetworkMapper.mapFromEntityList(response.body()?.result)
@@ -42,7 +42,7 @@ class PlanRepository @Inject constructor(
     suspend fun getPlan(id: Int): Flow<DataState<Plan>> = flow {
         emit(DataState.Loading)
         try {
-            val response = retrofitService.getPlan(id)
+            val response = apiService.getPlan(id)
             if (response.isSuccessful) {
                 response.body()?.let {
                     val plan = planNetworkMapper.mapFromEntity(it.result)

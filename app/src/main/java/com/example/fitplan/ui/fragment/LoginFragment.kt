@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fitplan.R
+import com.example.fitplan.databinding.LoginFragmentBinding
+import com.example.fitplan.databinding.PlanDetailsFragmentBinding
 import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.LoginResponse
 import com.example.fitplan.util.DataState
@@ -20,34 +22,35 @@ import kotlinx.android.synthetic.main.login_fragment.*
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var binding: LoginFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.login_fragment, container, false)
-        return view
+        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObserver()
-        btnLogin.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             viewModel.login(inputUsername.editText?.text.toString(), inputPassword.editText?.text.toString())
         }
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner) {
-            when (it) {
-                is DataState.Success<LoginResponse> -> {
+        viewModel.dataState.observe(viewLifecycleOwner) { data ->
+            when (data) {
+                is DataState.Success<LoginResponse?> -> {
                     displayProgressBar(false)
-                    successLogin(it.data)
+                    data.data?.let { loginData -> successLogin(loginData) }
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
-                    displayError(it.exception.message)
+                    displayError(data.exception.message)
                 }
                 is DataState.UserExceptionState -> {
                     displayProgressBar(false)
-                    displayError(it.exception.message)
+                    displayError(data.exception.message)
                 }
                 is DataState.Loading -> {
                     displayProgressBar(true)
@@ -59,11 +62,11 @@ class LoginFragment : Fragment() {
     private fun successLogin(response: LoginResponse) {
         Toast.makeText(context, "success login", Toast.LENGTH_LONG).show()
         SharedPreferencesManager(context).userAccessToken = response.accessToken
-        findNavController().navigate(R.id.planListFragment)
+        findNavController().navigate(R.id.action_loginFragment_to_planListFragment)
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {
-        progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
     }
 
     private fun displayError(message: String?) {

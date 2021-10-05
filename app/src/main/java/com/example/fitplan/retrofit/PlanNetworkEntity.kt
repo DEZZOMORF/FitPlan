@@ -99,6 +99,5 @@ data class PlanNetworkEntity(
 
     @SerializedName("description")
     @Expose
-    val description: String?,
-
-    )
+    val description: String?
+)

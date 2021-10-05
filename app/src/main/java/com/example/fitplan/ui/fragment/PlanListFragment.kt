@@ -1,7 +1,6 @@
 package com.example.fitplan.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,12 @@ class PlanListFragment : Fragment() {
     lateinit var planRecyclerViewAdapter: PlanRecyclerViewAdapter
     private lateinit var binding: PlanListFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    companion object {
+        private val ID: String = "id"
+        private val TITLE: String = "Plan list"
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = PlanListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -67,10 +71,12 @@ class PlanListFragment : Fragment() {
     }
 
     private fun setView() {
-        binding.title = "Plan list"
-        binding.toolbar.btnSetting.visibility = View.VISIBLE
-        binding.toolbar.btnBack.visibility = View.GONE
-        binding.toolbar.btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
+        binding.title = TITLE
+        with(binding.toolbar) {
+            btnSetting.visibility = View.VISIBLE
+            btnBack.visibility = View.GONE
+            btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
+        }
     }
 
     private fun initRecyclerView() {
@@ -78,8 +84,7 @@ class PlanListFragment : Fragment() {
         binding.planRecyclerView.adapter = planRecyclerViewAdapter
         planRecyclerViewAdapter.onItemClickListener = {
             val bundle = Bundle()
-            bundle.putInt("id", it)
-            Log.e("ID", it.toString())
+            bundle.putInt(ID, it)
             findNavController().navigate(R.id.action_planListFragment_to_planDetailsFragment, bundle)
         }
     }

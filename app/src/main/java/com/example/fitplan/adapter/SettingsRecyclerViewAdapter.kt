@@ -11,7 +11,7 @@ import com.example.fitplan.model.SettingsType
 
 class SettingsRecyclerViewAdapter(
     private val clickBlock: (SettingsItem, Int) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<SettingsRecyclerViewAdapter.BaseSettingViewHolder>() {
 
     private var settingsList: List<SettingsItem>? = null
 
@@ -20,7 +20,7 @@ class SettingsRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseSettingViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         return when (viewType) {
             0 -> DefaultViewHolder(SettingsItemDefaultBinding.inflate(inflater, viewGroup, false))
@@ -28,10 +28,9 @@ class SettingsRecyclerViewAdapter(
         }
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: BaseSettingViewHolder, position: Int) {
         settingsList?.elementAt(position)?.let {
-            if (viewHolder is BaseSettingViewHolder)
-                viewHolder.bindView(it)
+            viewHolder.bindView(it)
         }
     }
 

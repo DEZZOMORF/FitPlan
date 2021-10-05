@@ -16,5 +16,4 @@ interface PlanDao {
 
     @Query("SELECT * FROM plans WHERE id=:id")
     suspend fun getById(id: Int): PlanCacheEntity
-
 }

@@ -9,7 +9,7 @@ import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.Plan
 import javax.inject.Inject
 
-class PlanRecyclerViewAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PlanRecyclerViewAdapter @Inject constructor() : RecyclerView.Adapter<PlanRecyclerViewAdapter.BaseViewHolder>() {
 
     var list: ArrayList<Plan> = arrayListOf()
     private lateinit var binding: ItemPlanBinding
@@ -20,10 +20,8 @@ class PlanRecyclerViewAdapter @Inject constructor() : RecyclerView.Adapter<Recyc
         return ViewHolder(binding.root)
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if (viewHolder is BaseViewHolder) {
-            viewHolder.bindView()
-        }
+    override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
+        viewHolder.bindView()
     }
 
     override fun getItemId(position: Int): Long {

@@ -26,5 +26,4 @@ data class Plan(
     val allowFreeAccess: Boolean?,
     val imageTvUrl: String?,
     val description: String?
-
 )

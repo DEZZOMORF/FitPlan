@@ -7,7 +7,7 @@ import com.example.fitplan.util.NetworkUrls
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitService {
+interface ApiService {
 
     @FormUrlEncoded
     @POST(NetworkUrls.LOGIN)
@@ -24,5 +24,4 @@ interface RetrofitService {
 
     @GET(NetworkUrls.PLAN_DETAILS)
     suspend fun getPlan(@Query("planId") id: Int): Response<PlanResponse>
-
 }

@@ -23,6 +23,5 @@ data class LoginResponse(
 
     @SerializedName("jti")
     @Expose
-    var jti: String,
-
-    )
+    var jti: String
+)

@@ -29,5 +29,4 @@ class SharedPreferencesManager(context: Context?) {
                 putBoolean(SHOWING_IMAGE_STATE, state!!)
             }
         }
-
 }
