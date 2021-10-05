@@ -36,21 +36,25 @@ class LoginFragment: Fragment() {
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            when (dataState) {
+        viewModel.dataState.observe(viewLifecycleOwner){
+            when (it) {
                 is DataState.Success<LoginResponse> -> {
                     displayProgressBar(false)
-                    successLogin(dataState.data)
+                    successLogin(it.data)
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
-                    displayError(dataState.exception.message)
+                    displayError(it.exception.message)
+                }
+                is DataState.UserExceptionState -> {
+                    displayProgressBar(false)
+                    displayError(it.exception.message)
                 }
                 is DataState.Loading -> {
                     displayProgressBar(true)
                 }
             }
-        })
+        }
     }
 
     private fun successLogin(response: LoginResponse) {
