@@ -6,20 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitplan.R
 import com.example.fitplan.adapter.SettingsRecyclerViewAdapter
 import com.example.fitplan.databinding.SettingsFragmentBinding
-import com.example.fitplan.model.Plan
-import com.example.fitplan.model.SettingsItem
 import com.example.fitplan.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.plan_list_fragment.*
-import kotlinx.android.synthetic.main.plan_list_fragment.planRecyclerView
-import kotlinx.android.synthetic.main.plan_toolbar.*
-import kotlinx.android.synthetic.main.settings_fragment.*
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
