@@ -1,7 +1,6 @@
 package com.example.fitplan.retrofit
 
 import com.example.fitplan.model.LoginResponse
-import com.example.fitplan.model.Plan
 import com.example.fitplan.model.PlanListResponse
 import com.example.fitplan.model.PlanResponse
 import com.example.fitplan.util.NetworkUrls

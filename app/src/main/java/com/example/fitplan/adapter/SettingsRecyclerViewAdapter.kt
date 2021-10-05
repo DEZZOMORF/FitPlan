@@ -3,12 +3,7 @@ package com.example.fitplan.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fitplan.R
-import com.example.fitplan.databinding.ItemPlanBinding
 import com.example.fitplan.databinding.SettingsItemDefaultBinding
 import com.example.fitplan.databinding.SettingsItemSwitchBinding
 import com.example.fitplan.model.SettingsItem

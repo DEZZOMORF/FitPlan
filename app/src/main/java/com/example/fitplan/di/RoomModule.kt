@@ -2,8 +2,8 @@ package com.example.fitplan.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.fitplan.room.PlanDao
 import com.example.fitplan.room.FitPlanDatabase
+import com.example.fitplan.room.PlanDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

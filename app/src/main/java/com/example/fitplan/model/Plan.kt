@@ -1,6 +1,6 @@
 package com.example.fitplan.model
 
-data class Plan (
+data class Plan(
 
     val id: Int,
     val name: String?,
@@ -27,4 +27,4 @@ data class Plan (
     val imageTvUrl: String?,
     val description: String?
 
-        )
+)

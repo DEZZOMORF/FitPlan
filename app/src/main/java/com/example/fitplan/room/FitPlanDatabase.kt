@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(entities = [PlanCacheEntity::class], version = 1)
-abstract class FitPlanDatabase: RoomDatabase(){
+abstract class FitPlanDatabase : RoomDatabase() {
 
     abstract fun planDao(): PlanDao
 

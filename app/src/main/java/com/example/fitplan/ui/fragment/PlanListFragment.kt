@@ -55,7 +55,7 @@ class PlanListFragment : Fragment() {
                 is DataState.UserExceptionState -> {
                     displayProgressBar(false)
                     displayError(it.exception.message)
-                    if(it.exception.code == 401) {
+                    if (it.exception.code == 401) {
                         findNavController().navigate(R.id.loginFragment)
                     }
                 }

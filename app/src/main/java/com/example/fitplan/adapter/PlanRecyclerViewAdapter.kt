@@ -3,16 +3,13 @@ package com.example.fitplan.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fitplan.R
 import com.example.fitplan.databinding.ItemPlanBinding
 import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.Plan
 import javax.inject.Inject
 
-class PlanRecyclerViewAdapter @Inject constructor(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PlanRecyclerViewAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var list: ArrayList<Plan> = arrayListOf()
     private lateinit var binding: ItemPlanBinding
@@ -28,6 +25,7 @@ class PlanRecyclerViewAdapter @Inject constructor(): RecyclerView.Adapter<Recycl
             viewHolder.bindView()
         }
     }
+
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }

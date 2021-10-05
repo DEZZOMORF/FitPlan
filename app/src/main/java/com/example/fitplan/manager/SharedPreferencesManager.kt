@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class SharedPreferencesManager (context: Context?) {
+class SharedPreferencesManager(context: Context?) {
 
     private val SHARED_PREFERENCES_FILE_NAME = "fit_pref"
     private val ACCESS_TOKEN = "access_token"

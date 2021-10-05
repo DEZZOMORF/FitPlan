@@ -35,10 +35,11 @@ object RetrofitModule {
         return OkHttpClient.Builder()
             .addInterceptor(ChuckInterceptor(context))
             .addInterceptor {
-                return@addInterceptor it.proceed(it.request()
-                    .newBuilder()
-                    .addHeader("Authorization", "Bearer " + SharedPreferencesManager(context).userAccessToken)
-                    .build()
+                return@addInterceptor it.proceed(
+                    it.request()
+                        .newBuilder()
+                        .addHeader("Authorization", "Bearer " + SharedPreferencesManager(context).userAccessToken)
+                        .build()
                 )
             }
             .build()

@@ -30,7 +30,8 @@ class SettingsViewModel @Inject constructor(
             SettingsItem(
                 "Logout",
                 SettingsType.DEFAULT,
-                ActionType.LOGOUT)
+                ActionType.LOGOUT
+            )
         )
     }
 

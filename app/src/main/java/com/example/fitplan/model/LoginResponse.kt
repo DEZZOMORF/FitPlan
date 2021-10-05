@@ -25,4 +25,4 @@ data class LoginResponse(
     @Expose
     var jti: String,
 
-)
+    )

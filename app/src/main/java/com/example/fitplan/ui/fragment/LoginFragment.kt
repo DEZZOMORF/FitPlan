@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.login_fragment.*
 
 @AndroidEntryPoint
-class LoginFragment: Fragment() {
+class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
 
@@ -36,7 +36,7 @@ class LoginFragment: Fragment() {
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner){
+        viewModel.dataState.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success<LoginResponse> -> {
                     displayProgressBar(false)

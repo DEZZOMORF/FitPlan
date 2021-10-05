@@ -40,7 +40,7 @@ class PlanDetailsFragment : Fragment() {
     }
 
     private fun subscribeObserver() {
-        viewModel.dataState.observe(viewLifecycleOwner, Observer {
+        viewModel.dataState.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success<Plan> -> {
                     displayProgressBar(false)
@@ -61,7 +61,7 @@ class PlanDetailsFragment : Fragment() {
                     displayProgressBar(true)
                 }
             }
-        })
+        }
     }
 
     private fun setView(plan: Plan) {

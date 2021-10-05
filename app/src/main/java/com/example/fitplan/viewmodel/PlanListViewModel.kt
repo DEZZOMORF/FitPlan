@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitplan.model.Plan
 import com.example.fitplan.repository.PlanRepository
-import com.example.fitplan.repository.UserRepository
 import com.example.fitplan.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -23,7 +22,7 @@ class PlanListViewModel @Inject constructor(
     val dataState: LiveData<DataState<List<Plan>>>
         get() = _dataState
 
-    init{
+    init {
         getList()
     }
 
