@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.fitplan.R
 import com.example.fitplan.adapter.PlanRecyclerViewAdapter
-import com.example.fitplan.databinding.PlanListFragmentBinding
+import com.example.fitplan.databinding.FragmentPlanListBinding
 import com.example.fitplan.model.Plan
 import com.example.fitplan.util.DataState
 import com.example.fitplan.viewmodel.PlanListViewModel
@@ -19,28 +21,34 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PlanListFragment : Fragment() {
-
-    private val viewModel: PlanListViewModel by viewModels()
+class PlanListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     lateinit var planRecyclerViewAdapter: PlanRecyclerViewAdapter
-    private lateinit var binding: PlanListFragmentBinding
+    private val viewModel: PlanListViewModel by viewModels()
+    private lateinit var binding: FragmentPlanListBinding
 
     companion object {
-        private val ID: String = "id"
-        private val TITLE: String = "Plan list"
+        private const val ID: String = "id"
+        private const val TITLE: String = "Plan list"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = PlanListFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentPlanListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressBar.visibility = View.VISIBLE
         subscribeObserver()
         initRecyclerView()
+    }
+
+    override fun onRefresh() {
+        planRecyclerViewAdapter.list.clear()
+        planRecyclerViewAdapter.notifyDataSetChanged()
+        viewModel.getList()
     }
 
     private fun subscribeObserver() {
@@ -48,7 +56,7 @@ class PlanListFragment : Fragment() {
             when (it) {
                 is DataState.Success<List<Plan>> -> {
                     displayProgressBar(false)
-                    setView()
+                    initViews()
                     planRecyclerViewAdapter.list = ArrayList(it.data)
                     planRecyclerViewAdapter.notifyItemRangeInserted(0, it.data.size)
                 }
@@ -70,11 +78,16 @@ class PlanListFragment : Fragment() {
         }
     }
 
-    private fun setView() {
-        binding.title = TITLE
+    private fun initViews() {
+        with(binding) {
+            title = TITLE
+            swiperefresh.setOnRefreshListener(this@PlanListFragment)
+            progressBar.visibility = View.GONE
+        }
         with(binding.toolbar) {
             btnSetting.visibility = View.VISIBLE
             btnBack.visibility = View.GONE
+            toolbarText.setOnClickListener { binding.planRecyclerView.smoothScrollToPosition(0) }
             btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planListFragment_to_settingsFragment) }
         }
     }
@@ -90,7 +103,7 @@ class PlanListFragment : Fragment() {
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {
-        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
+        binding.swiperefresh.isRefreshing = isDisplayed
     }
 
     private fun displayError(message: String?) {

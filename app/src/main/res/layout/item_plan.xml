@@ -6,6 +6,10 @@
         <variable
             name="plan"
             type="com.example.fitplan.model.Plan" />
+        <variable
+            name="imageVisibility"
+            type="Boolean" />
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -33,7 +37,7 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/gradient_shape"
                     android:scaleType="centerCrop"
-                    android:visibility="gone" />
+                    android:visibility="@{imageVisibility ? View.VISIBLE : View.GONE}" />
 
                 <TextView
                     android:id="@+id/title"

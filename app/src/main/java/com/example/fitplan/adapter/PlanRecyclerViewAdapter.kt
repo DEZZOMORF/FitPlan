@@ -9,45 +9,31 @@ import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.Plan
 import javax.inject.Inject
 
-class PlanRecyclerViewAdapter @Inject constructor() : RecyclerView.Adapter<PlanRecyclerViewAdapter.BaseViewHolder>() {
+class PlanRecyclerViewAdapter @Inject constructor(
+    private var sharedPreferencesManager: SharedPreferencesManager
+): RecyclerView.Adapter<PlanRecyclerViewAdapter.ViewHolder>() {
 
     var list: ArrayList<Plan> = arrayListOf()
-    private lateinit var binding: ItemPlanBinding
     var onItemClickListener: ((Int) -> Unit)? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        binding = ItemPlanBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-        return ViewHolder(binding.root)
+        return ViewHolder(ItemPlanBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
     }
 
-    override fun onBindViewHolder(viewHolder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.bindView()
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
     }
 
     override fun getItemCount() = list.size
 
-    inner class ViewHolder(view: View) : BaseViewHolder(view) {
-        override fun bindView() {
-            val item = list[adapterPosition]
-            if (SharedPreferencesManager(itemView.context).showingImageState) {
-                binding.cardBackground.visibility = View.VISIBLE
-            }
-            binding.plan = item
+    inner class ViewHolder(private val binding: ItemPlanBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bindView() {
+            binding.imageVisibility = sharedPreferencesManager.showingImageState
+            binding.plan = list[adapterPosition]
             binding.itemCard.setOnClickListener {
-                onItemClickListener?.invoke(item.id)
+                onItemClickListener?.invoke(list[adapterPosition].id)
             }
+            binding.executePendingBindings()
         }
-    }
-
-    abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun bindView()
     }
 }

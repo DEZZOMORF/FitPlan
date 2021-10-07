@@ -9,33 +9,35 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fitplan.R
-import com.example.fitplan.databinding.PlanDetailsFragmentBinding
+import com.example.fitplan.databinding.FragmentPlanDetailsBinding
+import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.Plan
 import com.example.fitplan.util.DataState
 import com.example.fitplan.viewmodel.PlanDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.plan_list_fragment.*
-import kotlinx.android.synthetic.main.plan_toolbar.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PlanDetailsFragment : Fragment() {
 
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
     private val viewModel: PlanDetailsViewModel by viewModels()
-    private lateinit var binding: PlanDetailsFragmentBinding
+    private lateinit var binding: FragmentPlanDetailsBinding
 
     companion object {
-        private val ID: String = "id"
+        private const val ID: String = "id"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = PlanDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentPlanDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObserver()
-        setView()
+        initViews()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,13 +70,14 @@ class PlanDetailsFragment : Fragment() {
         }
     }
 
-    private fun setView() {
+    private fun initViews() {
         with(binding.toolbar) {
             btnSetting.visibility = View.VISIBLE
             btnBack.visibility = View.VISIBLE
             btnBack.setOnClickListener { requireActivity().onBackPressed() }
             btnSetting.setOnClickListener { findNavController().navigate(R.id.action_planDetailsFragment_to_settingsFragment) }
         }
+        binding.imageVisibility = sharedPreferencesManager.showingImageState
     }
 
     private fun displayProgressBar(isDisplayed: Boolean) {

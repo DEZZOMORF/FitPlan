@@ -7,7 +7,9 @@ import com.example.fitplan.util.UserException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository @Inject constructor(
     private val apiService: ApiService,
 ) {
@@ -18,17 +20,17 @@ class UserRepository @Inject constructor(
         clientId: String,
         clientSecret: String,
         grantType: String
-    ): Flow<DataState<LoginResponse?>> = flow {
-        emit(DataState.Loading)
-        try {
+    ): DataState<LoginResponse?> {
+        DataState.Loading
+        return try {
             val response = apiService.login(username, password, clientId, clientSecret, grantType)
             if (response.isSuccessful) {
-                emit(DataState.Success(response.body()))
+                DataState.Success(response.body())
             } else {
-                emit(DataState.UserExceptionState(UserException(response.code())))
+                DataState.UserExceptionState(UserException(response.code()))
             }
         } catch (e: Exception) {
-            emit(DataState.Error(e))
+            DataState.Error(e)
         }
     }
 }

@@ -9,23 +9,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fitplan.R
-import com.example.fitplan.databinding.LoginFragmentBinding
-import com.example.fitplan.databinding.PlanDetailsFragmentBinding
+import com.example.fitplan.databinding.FragmentLoginBinding
 import com.example.fitplan.manager.SharedPreferencesManager
 import com.example.fitplan.model.LoginResponse
 import com.example.fitplan.util.DataState
 import com.example.fitplan.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.login_fragment.*
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
-    private lateinit var binding: LoginFragmentBinding
+    private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,7 +31,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeObserver()
         binding.btnLogin.setOnClickListener {
-            viewModel.login(inputUsername.editText?.text.toString(), inputPassword.editText?.text.toString())
+            viewModel.login(binding.inputUsername.editText?.text.toString(), binding.inputPassword.editText?.text.toString())
         }
     }
 

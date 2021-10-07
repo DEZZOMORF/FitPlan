@@ -3,8 +3,12 @@ package com.example.fitplan.manager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SharedPreferencesManager(context: Context?) {
+@Singleton
+class SharedPreferencesManager @Inject constructor(@ApplicationContext context: Context?) {
 
     private val SHARED_PREFERENCES_FILE_NAME = "fit_pref"
     private val ACCESS_TOKEN = "access_token"

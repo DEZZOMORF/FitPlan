@@ -24,12 +24,7 @@ class PlanDetailsViewModel @Inject constructor(
 
     fun getPlan(id: Int) {
         viewModelScope.launch {
-            planRepository.getPlan(id)
-                .onEach { dataState ->
-                    _dataState.postValue(dataState)
-                }
-                .launchIn(viewModelScope)
+            planRepository.getPlan(id).let { _dataState.postValue(it) }
         }
     }
-
 }

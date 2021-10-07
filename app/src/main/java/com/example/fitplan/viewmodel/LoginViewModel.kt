@@ -18,9 +18,11 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val clientId = "XW9LtUlJfcCHMJbLyLen3lglY4COUgmCQErwjze7"
-    private val clientSecret = "ae55LjKyfVAf9dWaUX9HwoU5tpwHAVn2jKh8Of9zu3TP4zlD7JwguJhDYxXRT9zR2iuOIfHLrNiOAQSyAfRFs6dI7uXE8Yg7l3yyw7NTABnLr94VuPFKUOaaaCZ7xAv3"
-    private val grantType = "password"
+    companion object {
+        private const val clientId = "XW9LtUlJfcCHMJbLyLen3lglY4COUgmCQErwjze7"
+        private const val clientSecret = "ae55LjKyfVAf9dWaUX9HwoU5tpwHAVn2jKh8Of9zu3TP4zlD7JwguJhDYxXRT9zR2iuOIfHLrNiOAQSyAfRFs6dI7uXE8Yg7l3yyw7NTABnLr94VuPFKUOaaaCZ7xAv3"
+        private const val grantType = "password"
+    }
 
     private val _dataState: MutableLiveData<DataState<LoginResponse?>> = MutableLiveData()
     val dataState: LiveData<DataState<LoginResponse?>>
@@ -28,11 +30,7 @@ class LoginViewModel @Inject constructor(
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            userRepository.login(username, password, clientId, clientSecret, grantType)
-                .onEach { dataState ->
-                    _dataState.postValue(dataState)
-                }
-                .launchIn(viewModelScope)
+            userRepository.login(username, password, clientId, clientSecret, grantType).let { _dataState.postValue(it) }
         }
     }
 }

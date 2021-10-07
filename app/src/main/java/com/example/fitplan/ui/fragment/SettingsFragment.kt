@@ -10,19 +10,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitplan.R
 import com.example.fitplan.adapter.SettingsRecyclerViewAdapter
-import com.example.fitplan.databinding.SettingsFragmentBinding
+import com.example.fitplan.databinding.FragmentSettingsBinding
 import com.example.fitplan.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
+    @Inject
+    lateinit var settingsRecyclerViewAdapter: SettingsRecyclerViewAdapter
     private val viewModel: SettingsViewModel by viewModels()
-    private lateinit var binding: SettingsFragmentBinding
-    private lateinit var settingsRecyclerViewAdapter: SettingsRecyclerViewAdapter
+    private lateinit var binding: FragmentSettingsBinding
 
     companion object {
-        private val TITLE = "Settings"
+        private const val TITLE = "Settings"
     }
 
     override fun onCreateView(
@@ -30,18 +32,18 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SettingsFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setView()
+        initViews()
         viewModel.settings.observe(viewLifecycleOwner, settingsRecyclerViewAdapter::update)
     }
 
-    private fun setView() {
+    private fun initViews() {
         binding.title = TITLE
         with(binding.toolbar) {
             btnSetting.visibility = View.GONE
@@ -53,7 +55,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        settingsRecyclerViewAdapter = SettingsRecyclerViewAdapter(viewModel::onSettingClicked)
+        settingsRecyclerViewAdapter.clickBlock = viewModel::onSettingClicked
         binding.settingsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.settingsRecyclerView.adapter = settingsRecyclerViewAdapter
     }

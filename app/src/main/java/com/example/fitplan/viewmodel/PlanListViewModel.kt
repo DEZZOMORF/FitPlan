@@ -26,13 +26,9 @@ class PlanListViewModel @Inject constructor(
         getList()
     }
 
-    private fun getList() {
+    fun getList() {
         viewModelScope.launch {
-            planRepository.getList()
-                .onEach { dataState ->
-                    _dataState.postValue(dataState)
-                }
-                .launchIn(viewModelScope)
+            planRepository.getList().let { _dataState.postValue(it) }
         }
     }
 }
