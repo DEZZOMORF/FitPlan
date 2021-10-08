@@ -2,12 +2,15 @@ package com.example.fitplan.repository
 
 import com.example.fitplan.manager.NetworkConnectionManager
 import com.example.fitplan.model.Plan
+import com.example.fitplan.model.PlanListResponse
+import com.example.fitplan.model.PlanResponse
 import com.example.fitplan.retrofit.ApiService
 import com.example.fitplan.retrofit.PlanNetworkMapper
 import com.example.fitplan.room.PlanCacheMapper
 import com.example.fitplan.room.PlanDao
 import com.example.fitplan.util.DataState
 import com.example.fitplan.util.UserException
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,17 +43,11 @@ class PlanRepository @Inject constructor(
         return try {
             val response = apiService.getList()
             if (response.isSuccessful) {
-                response.body()?.let {
-                    val plans = planNetworkMapper.mapFromEntityList(response.body()?.result)
-                    for (plan in plans!!) {
-                        planDao.insert(planCacheMapper.mapToEntity(plan))
-                    }
-                    getListDataBase()
-                }
+                insertListToDataBase(response)
             } else {
-                getListDataBase()
                 DataState.UserExceptionState(UserException(response.code()))
             }
+            getListDataBase()
         } catch (e: Exception) {
             DataState.Error(e)
         }
@@ -65,20 +62,26 @@ class PlanRepository @Inject constructor(
         }
     }
 
+    private suspend fun insertListToDataBase(response: Response<PlanListResponse>) {
+        response.body()?.let {
+            val plans = planNetworkMapper.mapFromEntityList(response.body()?.result)
+            for (plan in plans!!) {
+                planDao.insert(planCacheMapper.mapToEntity(plan))
+            }
+        }
+    }
+
     private suspend fun getPlanNetwork(id: Int): DataState<Plan>? {
         DataState.Loading
         return try {
             val response = apiService.getPlan(id)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    val plan = planNetworkMapper.mapFromEntity(it.result)
-                    planDao.insert(planCacheMapper.mapToEntity(plan))
-                    getPlanDataBase(id)
-                }
+                insertPlanToDataBase(response)
             } else {
                 getPlanDataBase(id)
                 DataState.UserExceptionState(UserException(response.code()))
             }
+            getPlanDataBase(id)
         } catch (e: Exception) {
             DataState.Error(e)
         }
@@ -91,6 +94,13 @@ class PlanRepository @Inject constructor(
             DataState.Success(planCacheMapper.mapFromEntity(cachedPlans))
         } catch (e: Exception) {
             DataState.Error(e)
+        }
+    }
+
+    private suspend fun insertPlanToDataBase(response: Response<PlanResponse>) {
+        response.body()?.let {
+            val plan = planNetworkMapper.mapFromEntity(it.result)
+            planDao.insert(planCacheMapper.mapToEntity(plan))
         }
     }
 }
