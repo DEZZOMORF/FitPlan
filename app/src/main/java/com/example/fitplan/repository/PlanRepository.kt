@@ -78,7 +78,6 @@ class PlanRepository @Inject constructor(
             if (response.isSuccessful) {
                 insertPlanToDataBase(response)
             } else {
-                getPlanDataBase(id)
                 DataState.UserExceptionState(UserException(response.code()))
             }
             getPlanDataBase(id)
