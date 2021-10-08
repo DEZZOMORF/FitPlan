@@ -64,7 +64,7 @@ class PlanRepository @Inject constructor(
 
     private suspend fun insertListToDataBase(response: Response<PlanListResponse>) {
         response.body()?.let {
-            val plans = planNetworkMapper.mapFromEntityList(response.body()?.result)
+            val plans = planNetworkMapper.mapFromEntityList(it.result)
             for (plan in plans!!) {
                 planDao.insert(planCacheMapper.mapToEntity(plan))
             }
