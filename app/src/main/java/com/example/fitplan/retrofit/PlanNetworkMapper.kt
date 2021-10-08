@@ -1,7 +1,7 @@
 package com.example.fitplan.retrofit
 
 import com.example.fitplan.model.Plan
-import com.example.test.util.EntityMapper
+import com.example.fitplan.util.EntityMapper
 import javax.inject.Inject
 
 class PlanNetworkMapper @Inject constructor() : EntityMapper<PlanNetworkEntity, Plan> {

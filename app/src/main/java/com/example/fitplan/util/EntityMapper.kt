@@ -1,4 +1,4 @@
-package com.example.test.util
+package com.example.fitplan.util
 
 interface EntityMapper<Entity, DomainModel> {
 

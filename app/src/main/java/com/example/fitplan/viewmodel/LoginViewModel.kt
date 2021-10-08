@@ -8,8 +8,6 @@ import com.example.fitplan.model.LoginResponse
 import com.example.fitplan.repository.UserRepository
 import com.example.fitplan.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

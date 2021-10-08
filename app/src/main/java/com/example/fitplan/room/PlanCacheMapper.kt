@@ -1,7 +1,7 @@
 package com.example.fitplan.room
 
 import com.example.fitplan.model.Plan
-import com.example.test.util.EntityMapper
+import com.example.fitplan.util.EntityMapper
 import javax.inject.Inject
 
 class PlanCacheMapper @Inject constructor() : EntityMapper<PlanCacheEntity, Plan> {

@@ -4,8 +4,6 @@ import com.example.fitplan.model.LoginResponse
 import com.example.fitplan.retrofit.ApiService
 import com.example.fitplan.util.DataState
 import com.example.fitplan.util.UserException
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
