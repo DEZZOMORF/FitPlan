@@ -10,5 +10,6 @@
     <color name="button">#3DDC84</color>
 
     <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
+    <color name="blue_grey">#333B4B</color>
 
 </resources>
