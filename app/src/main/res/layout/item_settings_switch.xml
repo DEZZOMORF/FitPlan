@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="item"
             type="com.example.fitplan.model.SettingsItem" />
@@ -23,6 +24,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            style="@style/separator"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="@+id/setting" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
